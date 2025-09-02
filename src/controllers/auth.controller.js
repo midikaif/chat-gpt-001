@@ -42,7 +42,7 @@ async function registerController(req,res){
 async function loginController(req,res){
     const {email, password} = req.body;
 
-    const user = userModel.findOne({email});
+    const user = await userModel.findOne({email});
 
     if(!user){
         return res.status(400).json({
@@ -50,13 +50,19 @@ async function loginController(req,res){
         })
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = bcrypt.compare(password, user.password);
 
     if(!isPasswordValid){
         return res.status(400).json({
             message: 'Invalid email or password!'
         })
     }
+    
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+
+    res.cookie("token", token);
+
+
 
     res.status(200).json({
         message: 'user logged in successfully',
