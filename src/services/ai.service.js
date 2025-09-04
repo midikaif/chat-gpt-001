@@ -7,8 +7,12 @@ async function generateResponse(content) {
   const response = await ai.models.generateContent({
     model: "gemini-2.5-flash",
     contents: content,
+    config:{
+        temperature: 0.7
+    }
   });
   return response.text;
+
 }
 
 async function generateVector(content){
