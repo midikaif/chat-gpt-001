@@ -1,5 +1,5 @@
 import './App.css'
-import Main from './components/main/Main'
+import Home from './components/Home/Home'
 import Sidebar from './components/sidebar/Sidebar'
 
 function App() {
@@ -7,7 +7,7 @@ function App() {
   return (
     <>
       <Sidebar/>
-      <Main/>
+      <Home/>
     </>
   )
 }
