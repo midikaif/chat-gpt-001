@@ -4,6 +4,7 @@ import "./LoginSignup.css";
 import { FaUserAlt } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
+import axios from "axios";
 
 function LoginSignup() {
   const location = useLocation();
@@ -18,29 +19,61 @@ function LoginSignup() {
   const [action, setAction] = useState(getActionFromPath(location.pathname));
   // Form state
   const [form, setForm] = useState({
-    firstName: "",
-    lastName: "",
+    fullName: {
+      firstName: "",
+      lastName: "",
+    },
     email: "",
     password: "",
   });
 
   const handleInput = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+    // setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleSubmit = () => {
-    // You can replace this with your actual submit logic
 
-    if (action === "sign up") {
-      alert(
-        `Sign Up\nFirst Name: ${form.firstName}\nLast Name: ${form.lastName}\nEmail: ${form.email}\nPassword: ${form.password}`
-      );
+const { name, value } = e.target;
+    if (name === "firstName" || name === "lastName") {
+      setForm({
+        ...form,
+        fullName: {
+          ...form.fullName,
+          [name]: value,
+        },
+      });
     } else {
-      alert(`Login\nEmail: ${form.email}\nPassword: ${form.password}`);
+      setForm({ ...form, [name]: value });
     }
   };
 
+
+
+
+  const handleSubmit = () => {
+    console.log(action)
+    
+    axios
+      .post(
+        `http://localhost:3000/api/auth${location.pathname}`,
+        {
+          ...form,
+        },
+        {
+          withCredentials: true,
+        }
+      )
+      .then((response) => {
+        console.log("Response:", response.data);
+        navigate("/");
+        // Handle successful response
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        // Handle error response
+      });
+  };
+
   useEffect(() => {
+    console.log(getActionFromPath(location.pathname));
     setAction(getActionFromPath(location.pathname));
   }, [location.pathname]);
 
@@ -55,7 +88,7 @@ function LoginSignup() {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          console.log("Form submitted:", e);
+          handleSubmit();
         }}
       >
         <div className="inputs">
@@ -66,14 +99,14 @@ function LoginSignup() {
                 type="text"
                 placeholder="First Name"
                 name="firstName"
-                value={form.firstName}
+                value={form.fullName.firstName}
                 onChange={handleInput}
               />
               <input
                 type="text"
                 placeholder="Last Name"
                 name="lastName"
-                value={form.lastName}
+                value={form.fullName.lastName}
                 onChange={handleInput}
               />
             </div>
@@ -101,41 +134,34 @@ function LoginSignup() {
         </div>
         <div className="submit-container">
           <button
+          type="button"
             className={action === "sign up" ? "submit" : "submit inactive"}
-            tabIndex={0}
+            key={0}
             onClick={() => {
               if (action !== "sign up") {
                 navigate("/signup");
-              } else {
+              }else{
                 handleSubmit();
               }
             }}
-            // onKeyDown={(e) => {
-            //   if (e.key === "Enter" && action === "sign up") {
-            //     handleSubmit();
-            //   }
-            // }}
           >
             Sign Up
           </button>
           <button
             className={action === "login" ? "submit" : "submit inactive"}
-            tabIndex={0}
-            onClick={(e) => {
+            key={1}
+            type="button"
+            onClick={() => {
               if (action !== "login") {
                 navigate("/login");
-              } else {
+              }else{
                 handleSubmit();
               }
             }}
-            // onKeyDown={(e) => {
-            //   if (e.key === "Enter" && action === "login") {
-            //     handleSubmit();
-            //   }
-            // }}
           >
             Log in
           </button>
+          <button type="submit" style={{ display: "none" }} />
         </div>
       </form>
     </div>
