@@ -5,11 +5,23 @@ import { FaUserAlt } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 function LoginSignup() {
   const location = useLocation();
   const navigate = useNavigate();
   // Determine initial action from path
+
+  useEffect(() => {
+    const cookies = Cookies.get("token");
+    const path = location.pathname;
+
+
+    if (cookies && (path === "/login" || path === "/signup")) {
+      navigate("/", { replace: true });
+    }
+
+}, [location.pathname]);
 
   const getActionFromPath = (pathname) => {
     if (pathname === "/login") return "login";
@@ -30,8 +42,7 @@ function LoginSignup() {
   const handleInput = (e) => {
     // setForm({ ...form, [e.target.name]: e.target.value });
 
-
-const { name, value } = e.target;
+    const { name, value } = e.target;
     if (name === "firstName" || name === "lastName") {
       setForm({
         ...form,
@@ -45,12 +56,9 @@ const { name, value } = e.target;
     }
   };
 
-
-
-
   const handleSubmit = () => {
-    console.log(action)
-    
+    console.log(action);
+
     axios
       .post(
         `http://localhost:3000/api/auth${location.pathname}`,
@@ -73,7 +81,6 @@ const { name, value } = e.target;
   };
 
   useEffect(() => {
-    console.log(getActionFromPath(location.pathname));
     setAction(getActionFromPath(location.pathname));
   }, [location.pathname]);
 
@@ -134,13 +141,13 @@ const { name, value } = e.target;
         </div>
         <div className="submit-container">
           <button
-          type="button"
+            type="button"
             className={action === "sign up" ? "submit" : "submit inactive"}
             key={0}
             onClick={() => {
               if (action !== "sign up") {
                 navigate("/signup");
-              }else{
+              } else {
                 handleSubmit();
               }
             }}
@@ -154,7 +161,7 @@ const { name, value } = e.target;
             onClick={() => {
               if (action !== "login") {
                 navigate("/login");
-              }else{
+              } else {
                 handleSubmit();
               }
             }}

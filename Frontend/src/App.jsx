@@ -1,8 +1,10 @@
 import "./App.css";
 import Home from "./components/Home/Home";
 import LoginSignup from "./components/LoginSignup/LoginSignup";
+import ProtectedRoute from "./components/ProtectedRoute";
 import Sidebar from "./components/sidebar/Sidebar";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 
 function App() {
   return (
@@ -13,10 +15,10 @@ function App() {
         <Route
           path="/"
           element={
-            <>
-              <Sidebar />
+<>
+            <Sidebar />
               <Home />
-            </>
+</>          
           }
         />
       </Routes>

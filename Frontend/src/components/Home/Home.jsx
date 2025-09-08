@@ -1,7 +1,9 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
+import Cookies from "js-cookie";
 import "./Home.css";
 import { assets } from "../../assets/assets";
-import {Context} from "../../Context/ContextProvider";
+import { Context } from "../../Context/ContextProvider";
+import {useLocation, useNavigate} from "react-router-dom";
 
 function Home() {
   const {
@@ -13,6 +15,22 @@ function Home() {
     setInput,
     input,
   } = useContext(Context);
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const cookies = Cookies.get("token");
+
+  useEffect(() => {
+    const path = location.pathname;
+
+    console.log(path);
+
+    if (!cookies && path !== "/login" && path !== "/signup") {
+      navigate("/login", { replace: true });
+    }
+  }, [location.pathname]);
+
 
   return (
     <div className="main">
@@ -29,24 +47,30 @@ function Home() {
               </p>
               <p>How can I help you today?</p>
             </div>
-            <div className="cards">
-              <div className="card">
-                <p>Suggest beautiful places to see on an upcoming road trip</p>
-                <img src={assets.compass_icon} alt="compass icon" />
+            {cookies ? (
+              <div className="cards">
+                <div className="card">
+                  <p>
+                    Suggest beautiful places to see on an upcoming road trip
+                  </p>
+                  <img src={assets.compass_icon} alt="compass icon" />
+                </div>
+                <div className="card">
+                  <p>Briefly summarize this concept: urban planning</p>
+                  <img src={assets.bulb_icon} alt="bulb icon" />
+                </div>
+                <div className="card">
+                  <p>Brainstorm team bonding activities for our work retreat</p>
+                  <img src={assets.message_icon} alt="message icon" />
+                </div>
+                <div className="card">
+                  <p>Improve the readabilty of the following code</p>
+                  <img src={assets.code_icon} alt="code icon" />
+                </div>
               </div>
-              <div className="card">
-                <p>Briefly summarize this concept: urban planning</p>
-                <img src={assets.bulb_icon} alt="bulb icon" />
-              </div>
-              <div className="card">
-                <p>Brainstorm team bonding activities for our work retreat</p>
-                <img src={assets.message_icon} alt="message icon" />
-              </div>
-              <div className="card">
-                <p>Improve the readabilty of the following code</p>
-                <img src={assets.code_icon} alt="code icon" />
-              </div>
-            </div>
+            ) : (
+              <></>
+            )}
           </>
         ) : (
           <div className="result">
@@ -56,11 +80,11 @@ function Home() {
             </div>
             <div className="result-data">
               <img src={assets.gemini_icon} alt="gemini icon" />
-<div className="loader">
-  <hr />
-  <hr />
-  <hr />
-</div>
+              <div className="loader">
+                <hr />
+                <hr />
+                <hr />
+              </div>
               {/* <p dangerouslySetInnerHTML={{__html: resultData}}></p> */}
             </div>
           </div>
