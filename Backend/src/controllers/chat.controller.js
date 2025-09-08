@@ -21,6 +21,17 @@ async function createChat(req,res){
     })
 }
 
+async function getAllChats(req,res){
+    const user = req.user;
+    const chats = await chatModel.find({user: user._id}).sort({lastActivity: -1}).limit(4);
+
+    res.status(200).json({
+        message: 'Chats retrieved successfully',
+        chats
+    });
+}
+
 module.exports = {
-    createChat
+    createChat,
+    getAllChats
 }

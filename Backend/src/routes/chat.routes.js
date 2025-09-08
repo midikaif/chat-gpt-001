@@ -5,6 +5,7 @@ const chatController = require('../controllers/chat.controller');
 const router = express.Router();
 
 router.post('/',authMiddleware.authUser,chatController.createChat);
+router.get('/all',authMiddleware.authUser,chatController.getAllChats);
 
 
 
