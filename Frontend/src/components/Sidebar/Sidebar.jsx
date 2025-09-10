@@ -5,11 +5,10 @@ import axios from "axios";
 import { IoIosArrowBack, IoMdSend } from "react-icons/io";
 import { MdCheckCircle } from "react-icons/md";
 import { Context } from "../../context/ContextProvider";
-
+import RecentChats from "../RecentChats/RecentChats";
 
 function Sidebar() {
-
-  const {selectedChat,setSelectedChat} = useContext(Context);
+  const { selectedChat, setSelectedChat } = useContext(Context);
 
   const [extended, setExtended] = useState(false);
   const [chats, setChats] = useState([]);
@@ -17,20 +16,21 @@ function Sidebar() {
   const [chatInput, setChatInput] = useState("");
   const [notification, setNotification] = useState("");
 
-  
-  
   const sendChat = (e) => {
     e.preventDefault();
     // Simulate chat creation success
     setChatInput("");
     setNotification("Chat created successfully!");
     setTimeout(() => setNotification(""), 2000);
-  
 
-    axios.post("http://localhost:3000/api/chat", { title: chatInput }, { withCredentials: true })
+    axios
+      .post(
+        "http://localhost:3000/api/chat",
+        { title: chatInput },
+        { withCredentials: true }
+      )
       .then((response) => {
         console.log("Chat created:", response.data);
-        
       })
       .catch((error) => {
         console.error("Error creating chat:", error);
@@ -39,7 +39,7 @@ function Sidebar() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/api/chat/all", {
+      .get("http://localhost:3000/api/chat", {
         withCredentials: true,
       })
       .then((response) => {
@@ -50,8 +50,6 @@ function Sidebar() {
         console.error("Error fetching chat data:", error);
       });
   }, [notification]);
-
-
 
   return (
     <div className="sidebar">
@@ -100,48 +98,23 @@ function Sidebar() {
                 <IoMdSend size={20} />
               </button>
             </form>
-          
           )}
         </div>
 
         {extended && (
           <div className="recent">
             <p className="recent-title">Recent</p>
-            {/* {chats.map((chat, index) => (
-              <div className="recent-entry" key={index} onClick={()=> {
-                setChatId(chat._id)
 
-                }} > */}
-            {chats.map((chat, index) => (
-              <div
-                className={`recent-entry${selectedChat === chat._id ? " selected" : ""}`}
-                key={index}
-                onClick={() => {
-                  if (selectedChat === chat._id) {
-                    setSelectedChat(null);
-                    return;
-                  }
-                  setSelectedChat(chat._id);
-                }}
-              >
-                <img src={assets.message_icon} alt="message icon" />
-                <p>{chat.title}</p>
-              </div>
-            ))}
+            <RecentChats chats={chats} />
           </div>
         )}
       </div>
       {notification && (
-        <div className="notification"
-          style={{
-
-          }}
-        >
-          <MdCheckCircle size={24}  style={{ marginRight: 6 }} />
+        <div className="notification" style={{}}>
+          <MdCheckCircle size={24} style={{ marginRight: 6 }} />
           {notification}
         </div>
-
-)}
+      )}
       <div className="bottom">
         <div className="bottom-item recent-entry">
           <img src={assets.question_icon} alt="question icon" />

@@ -4,37 +4,37 @@ import { io } from "socket.io-client";
 import "./Home.css";
 import { assets } from "../../assets/assets";
 import { Context } from "../../Context/ContextProvider";
-import {useLocation, useNavigate} from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import Welcome from "../Welcome/Welcome";
+import Chats from "../Chats/Chats";
 
 function Home() {
   const {
     onSend,
-    recentPrompt,
+    userPrompt,
     showResult,
     loading,
-    resultData,
+    aiPrompt,
     setInput,
     input,
     selectedChat,
     setLoading,
-    setSelectedChat
+    setSelectedChat,
   } = useContext(Context);
 
   const location = useLocation();
   const navigate = useNavigate();
-
+  console.log(aiPrompt.chat === selectedChat);
 
   const cookies = Cookies.get("token");
 
   useEffect(() => {
     const path = location.pathname;
-    
-  
+
     if (!cookies && path !== "/login" && path !== "/signup") {
       navigate("/login", { replace: true });
     }
   }, [location.pathname]);
-
 
   return (
     <div className="main">
@@ -44,69 +44,19 @@ function Home() {
       </div>
       {/* {selectedChat && */}
       <div className="main-container">
-        {!showResult ? (
-          <>
-            <div className="greet">
-              <p>
-                <span>Hello, Dev.</span>
-              </p>
-              <p>How can I help you today?</p>
-            </div>
-            {cookies ? (
-              <div className="cards">
-                <div className="card">
-                  <p>
-                    Suggest beautiful places to see on an upcoming road trip
-                  </p>
-                  <img src={assets.compass_icon} alt="compass icon" />
-                </div>
-                <div className="card">
-                  <p>Briefly summarize this concept: urban planning</p>
-                  <img src={assets.bulb_icon} alt="bulb icon" />
-                </div>
-                <div className="card">
-                  <p>Brainstorm team bonding activities for our work retreat</p>
-                  <img src={assets.message_icon} alt="message icon" />
-                </div>
-                <div className="card">
-                  <p>Improve the readabilty of the following code</p>
-                  <img src={assets.code_icon} alt="code icon" />
-                </div>
-              </div>
-            ) : (
-              <></>
-            )}
-          </>
-        ) : (
-          <div className="result">
-            <div className="result-title">
-              <img src={assets.user_icon} alt="user icon" />
-              <p>{recentPrompt}</p>
-            </div>
-            <div className="result-data">
-              <img src={assets.gemini_icon} alt="gemini icon" />
-              {!loading ? (
-                <div className="loader">
-                  <hr />
-                  <hr />
-                  <hr />
-                </div>
-              ):
-              <p dangerouslySetInnerHTML={{__html: resultData}}></p>
-              }
-            </div>
-          </div>
-        )}
+        {selectedChat ? <Chats selectedChat={selectedChat} /> : <Welcome />}
 
         <div className="main-bottom">
-          <form className="search-box" onSubmit={(e) => {
-            e.preventDefault();
-            
-            onSend(input, selectedChat);
+          <form
+            className="search-box"
+            onSubmit={(e) => {
+              e.preventDefault();
+
+              onSend(input, selectedChat);
               setLoading(false);
               setInput("");
-
-          }}>
+            }}
+          >
             <input
               type="text"
               onChange={(e) => setInput(e.target.value)}
@@ -118,7 +68,7 @@ function Home() {
               <img src={assets.mic_icon} alt="mic icon" />
               <img
                 src={assets.send_icon}
-                onClick={() => onSend(input,selectedChat)}
+                onClick={() => onSend(input, selectedChat)}
                 alt="send icon"
               />
             </div>
@@ -128,8 +78,6 @@ function Home() {
             check its responses. Your privacy and Humen app.
           </div>
         </div>
-
-      
       </div>
       {/* } */}
     </div>

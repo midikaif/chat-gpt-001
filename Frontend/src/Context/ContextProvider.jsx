@@ -7,11 +7,16 @@ export {Context};
 
 const ContextProvider = (props) => {
   const [input, setInput] = useState("");
-  const [recentPrompt, setRecentPrompt] = useState("");
-  const [prevPrompts, setPrevPrompts] = useState([]);
+  const [userPrompt, setUserPrompt] = useState("");
+  const [prevPrompts, setPrevPrompts] = useState([
+    {
+      user: { chat: "chat1", content: "what is your name?" },
+      model: { chat: "chat1", content: "i am an ai developed by google. " }
+    }
+  ]);
   const [showResult, setShowResult] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [resultData, setResultData] = useState("");
+  const [aiPrompt, setAiPrompt] = useState({});
   
   const [selectedChat, setSelectedChat] = useState(null);
 
@@ -22,10 +27,10 @@ const ContextProvider = (props) => {
 
 
   const onSend = async (prompt,chatId) => {
-    setResultData("");
+    setAiPrompt({});
     setLoading(true);
     setShowResult(true);
-    setRecentPrompt(prompt);
+    setUserPrompt(prompt);
     
 
     tempSocket.emit("ai-message", {
@@ -35,7 +40,14 @@ const ContextProvider = (props) => {
 
     tempSocket.on("ai-response", (message) => {
       console.log("Message from server:", message);
-      setResultData(message.content);
+      setAiPrompt(message);
+      setPrevPrompts((prev) => [...prev, { 
+        user: {
+        chat: chatId,
+        content: prompt
+      }, 
+      ai: message }]);
+      setLoading(false);
     });
     
   
@@ -45,12 +57,12 @@ const ContextProvider = (props) => {
     prevPrompts,
     setPrevPrompts,
     onSend,
-    setRecentPrompt,
-    recentPrompt,
+    setUserPrompt,
+    userPrompt,
     showResult,
     loading,
     setLoading,
-    resultData,
+    aiPrompt,
     input,
     setInput,
     selectedChat,
