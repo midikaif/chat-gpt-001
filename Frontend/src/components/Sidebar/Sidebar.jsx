@@ -1,17 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./Sidebar.css";
 import { assets } from "../../assets/assets";
 import axios from "axios";
 import { IoIosArrowBack, IoMdSend } from "react-icons/io";
 import { MdCheckCircle } from "react-icons/md";
+import { Context } from "../../context/ContextProvider";
+
 
 function Sidebar() {
+
+  const {selectedChat,setSelectedChat} = useContext(Context);
+
   const [extended, setExtended] = useState(false);
   const [chats, setChats] = useState([]);
   const [newChat, setNewChat] = useState(false);
   const [chatInput, setChatInput] = useState("");
   const [notification, setNotification] = useState("");
 
+  
+  
   const sendChat = (e) => {
     e.preventDefault();
     // Simulate chat creation success
@@ -19,9 +26,11 @@ function Sidebar() {
     setNotification("Chat created successfully!");
     setTimeout(() => setNotification(""), 2000);
   
+
     axios.post("http://localhost:3000/api/chat", { title: chatInput }, { withCredentials: true })
       .then((response) => {
         console.log("Chat created:", response.data);
+        
       })
       .catch((error) => {
         console.error("Error creating chat:", error);
@@ -35,13 +44,14 @@ function Sidebar() {
       })
       .then((response) => {
         const { chats } = response.data;
-        console.log(chats);
         setChats(chats);
       })
       .catch((error) => {
         console.error("Error fetching chat data:", error);
       });
   }, [notification]);
+
+
 
   return (
     <div className="sidebar">
@@ -84,6 +94,7 @@ function Sidebar() {
                 autoFocus
                 value={chatInput}
                 onChange={(e) => setChatInput(e.target.value)}
+                required
               />
               <button className="submit-btn" type="submit">
                 <IoMdSend size={20} />
@@ -96,8 +107,23 @@ function Sidebar() {
         {extended && (
           <div className="recent">
             <p className="recent-title">Recent</p>
+            {/* {chats.map((chat, index) => (
+              <div className="recent-entry" key={index} onClick={()=> {
+                setChatId(chat._id)
+
+                }} > */}
             {chats.map((chat, index) => (
-              <div className="recent-entry" key={index}>
+              <div
+                className={`recent-entry${selectedChat === chat._id ? " selected" : ""}`}
+                key={index}
+                onClick={() => {
+                  if (selectedChat === chat._id) {
+                    setSelectedChat(null);
+                    return;
+                  }
+                  setSelectedChat(chat._id);
+                }}
+              >
                 <img src={assets.message_icon} alt="message icon" />
                 <p>{chat.title}</p>
               </div>

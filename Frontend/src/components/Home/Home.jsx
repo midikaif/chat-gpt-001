@@ -1,5 +1,6 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
+import { io } from "socket.io-client";
 import "./Home.css";
 import { assets } from "../../assets/assets";
 import { Context } from "../../Context/ContextProvider";
@@ -14,18 +15,21 @@ function Home() {
     resultData,
     setInput,
     input,
+    selectedChat,
+    setLoading,
+    setSelectedChat
   } = useContext(Context);
 
   const location = useLocation();
   const navigate = useNavigate();
 
+
   const cookies = Cookies.get("token");
 
   useEffect(() => {
     const path = location.pathname;
-
-    console.log(path);
-
+    
+  
     if (!cookies && path !== "/login" && path !== "/signup") {
       navigate("/login", { replace: true });
     }
@@ -38,6 +42,7 @@ function Home() {
         <p>Humen</p>
         <img src={assets.user_icon} alt="user icon" />
       </div>
+      {/* {selectedChat && */}
       <div className="main-container">
         {!showResult ? (
           <>
@@ -80,18 +85,28 @@ function Home() {
             </div>
             <div className="result-data">
               <img src={assets.gemini_icon} alt="gemini icon" />
-              <div className="loader">
-                <hr />
-                <hr />
-                <hr />
-              </div>
-              {/* <p dangerouslySetInnerHTML={{__html: resultData}}></p> */}
+              {!loading ? (
+                <div className="loader">
+                  <hr />
+                  <hr />
+                  <hr />
+                </div>
+              ):
+              <p dangerouslySetInnerHTML={{__html: resultData}}></p>
+              }
             </div>
           </div>
         )}
 
         <div className="main-bottom">
-          <div className="search-box">
+          <form className="search-box" onSubmit={(e) => {
+            e.preventDefault();
+            
+            onSend(input, selectedChat);
+              setLoading(false);
+              setInput("");
+
+          }}>
             <input
               type="text"
               onChange={(e) => setInput(e.target.value)}
@@ -103,17 +118,20 @@ function Home() {
               <img src={assets.mic_icon} alt="mic icon" />
               <img
                 src={assets.send_icon}
-                onClick={() => onSend(input)}
+                onClick={() => onSend(input,selectedChat)}
                 alt="send icon"
               />
             </div>
-          </div>
+          </form>
           <div className="bottom-info">
             Humen may display inaccurate info, including about people, so double
             check its responses. Your privacy and Humen app.
           </div>
         </div>
+
+      
       </div>
+      {/* } */}
     </div>
   );
 }

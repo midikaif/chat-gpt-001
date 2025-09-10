@@ -1,5 +1,5 @@
+import { io } from "socket.io-client";
 import { createContext, useState } from "react";
-import aiResponse from "../config/ai.response";
 
 const Context = createContext();
 
@@ -12,16 +12,33 @@ const ContextProvider = (props) => {
   const [showResult, setShowResult] = useState(false);
   const [loading, setLoading] = useState(false);
   const [resultData, setResultData] = useState("");
+  
+  const [selectedChat, setSelectedChat] = useState(null);
 
-  const onSend = async (prompt) => {
+
+  const tempSocket = io("http://localhost:3000", { withCredentials: true });
+
+    
+
+
+  const onSend = async (prompt,chatId) => {
     setResultData("");
     setLoading(true);
     setShowResult(true);
     setRecentPrompt(prompt);
-    const response = aiResponse(prompt);
-    setResultData(response);
-    setLoading(false);
-    setInput("");
+    
+
+    tempSocket.emit("ai-message", {
+      chat: chatId,
+      content: prompt,
+    });
+
+    tempSocket.on("ai-response", (message) => {
+      console.log("Message from server:", message);
+      setResultData(message.content);
+    });
+    
+  
   };
 
   const contextValue = {
@@ -32,9 +49,12 @@ const ContextProvider = (props) => {
     recentPrompt,
     showResult,
     loading,
+    setLoading,
     resultData,
     input,
     setInput,
+    selectedChat,
+    setSelectedChat,
   };
 
   return (

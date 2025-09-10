@@ -4,12 +4,13 @@ const { Pinecone } = require("@pinecone-database/pinecone");
 // Initialize a Pinecone client with your API key
 const pc = new Pinecone({ apiKey: process.env.PINECONE_API });
 
-const chatGptIndex = pc.Index('chat-gpt-clone');
+const chatGptIndex = pc.Index('chat-gpt-001');
 
 async function createMemory({vectors, metadata, messageId}){
+    
     await chatGptIndex.upsert([{
         id: messageId,
-        values: vectors,
+        values: vectors[0].values,
         metadata
     }])
 }
