@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./LoginSignup.css";
 import { FaUserAlt } from "react-icons/fa";
@@ -6,10 +6,13 @@ import { MdEmail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import axios from "axios";
 import Cookies from "js-cookie";
+import {Context} from "../../context/ContextProvider";
 
 function LoginSignup() {
   const location = useLocation();
   const navigate = useNavigate();
+  const {setUser} = useContext(Context)
+
   // Determine initial action from path
 
   useEffect(() => {
@@ -71,6 +74,9 @@ function LoginSignup() {
       )
       .then((response) => {
         console.log("Response:", response.data);
+
+        setUser(response.data.user);
+
         navigate("/");
         // Handle successful response
       })

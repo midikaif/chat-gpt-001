@@ -1,3 +1,30 @@
+.info {
+  text-align: center;
+  margin: 32px auto 0 auto;
+  display: flex;
+    flex-direction: column;
+    gap: 10px;
+  padding: 18px 32px;
+  background: rgba(240, 244, 249, 0.85);
+  border-radius: 12px;
+  color: #454545d2;
+  font-size: 1.1rem;
+  font-weight: 500;
+  box-shadow: 0 2px 12px rgba(76, 0, 180, 0.06);
+  /* max-width: 400px; */
+  letter-spacing: 0.01em;
+  transition: background 0.2s, color 0.2s;
+    /* opacity: .9; */
+}
+
+.info div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* gap: 5px; */
+    cursor: pointer;
+}
+
 .greet {
   margin: 15px 0px;
   font-size: 56px;

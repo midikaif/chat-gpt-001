@@ -7,52 +7,55 @@ import axios from "axios";
 function Chats({selectedChat}) {
   const { userPrompt, aiPrompt, prevPrompts, setPrevPrompts } = useContext(Context);
 
-//   useEffect(() => {
-//     axios.get(`http://localhost:3000/api/chat/${selectedChat}`, { withCredentials: true })
-//       .then((response) => {
-//         const result = response.data.chat;
-//         console.log(result);
-//         result.map((item) => {
-//             const role = item.role;
-//             const content = item.content;
-//             setPrevPrompts((prev) => {
-//                 prev.push({ [role]: content });
-//                 return prev;
-//             });
-//         });
-//         console.log(prevPrompts);
-//         // Update the context with the fetched prompts
-//       })
-//       .catch((error) => {
-//         console.error("Error fetching chat data:", error);
-//       });
-//   }, []);
+  useEffect(() => {
+    axios.get(`http://localhost:3000/api/chat/${selectedChat}`, { withCredentials: true })
+      .then((response) => {
+        const result = response.data.chat;
+        console.log(result);
+        setPrevPrompts(result)
+        // result.map((item) => {
+        //     const role = item.role;
+        //     const content = item.content;
+        //     setPrevPrompts((prev) => [...prev, { [role]: content }]);
+        // });
+
+        console.log(prevPrompts);
+        
+        // Update the context with the fetched prompts
+      })
+      .catch((error) => {
+        console.error("Error fetching chat data:", error);
+      });
+
+    }, [selectedChat]);
 
 
   return prevPrompts.map((prompt, index) => {
     return (
 
-      <div className="result" key={index}>
-        <div className="user">
-          <img src={assets.user_icon} alt="user icon" />
-          <p>{prompt.user.content}</p>
-        </div>
-        <div className="ai">
-          <img src={assets.gemini_icon} alt="gemini icon" />
-          {!prompt.model.content ? (
-            <div className="loader">
-              <hr />
+      <div key={index}>
+        {prompt.role === 'user' && (
+          <div className="user">
+            <img src={assets.user_icon} alt="user icon" />
+            <p>{prompt.content}</p>
+          </div>
+        )}
+        {prompt.role === 'model' && (
+          <div className="ai">
+            <img src={assets.gemini_icon} alt="gemini icon" />
+            {!prompt.role === 'model' ? (
+              <div className="loader">
+                <hr />
               <hr />
               <hr />
             </div>
           ) : (
-            <p dangerouslySetInnerHTML={{ __html: prompt.model.content }}></p>
+            <p dangerouslySetInnerHTML={{ __html: prompt.content }}></p>
           )}
-      </div>
+        </div>
+      )}
     </div>
-
-    );
-  });
+  );
+})
 }
-
 export default Chats;

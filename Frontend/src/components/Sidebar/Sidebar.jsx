@@ -8,14 +8,12 @@ import { Context } from "../../context/ContextProvider";
 import RecentChats from "../RecentChats/RecentChats";
 
 function Sidebar() {
-  const { selectedChat, setSelectedChat } = useContext(Context);
+  const { notification, setNotification,setExtended, extended } = useContext(Context);
 
-  const [extended, setExtended] = useState(false);
   const [chats, setChats] = useState([]);
   const [newChat, setNewChat] = useState(false);
   const [chatInput, setChatInput] = useState("");
-  const [notification, setNotification] = useState("");
-
+  
   const sendChat = (e) => {
     e.preventDefault();
     // Simulate chat creation success

@@ -6,17 +6,19 @@ const Context = createContext();
 export {Context};
 
 const ContextProvider = (props) => {
+  const [user, setUser] = useState(null);
   const [input, setInput] = useState("");
   const [userPrompt, setUserPrompt] = useState("");
-  const [prevPrompts, setPrevPrompts] = useState([
-    {
-      user: { chat: "chat1", content: "what is your name?" },
-      model: { chat: "chat1", content: "i am an ai developed by google. " }
-    }
-  ]);
+  const [prevPrompts, setPrevPrompts] = useState([]);
   const [showResult, setShowResult] = useState(false);
   const [loading, setLoading] = useState(false);
   const [aiPrompt, setAiPrompt] = useState({});
+const [notification, setNotification] = useState("");
+  const [extended, setExtended] = useState(false);
+
+
+
+
   
   const [selectedChat, setSelectedChat] = useState(null);
 
@@ -67,6 +69,12 @@ const ContextProvider = (props) => {
     setInput,
     selectedChat,
     setSelectedChat,
+    user,
+    setUser,
+    notification,
+    setNotification,
+    extended,
+    setExtended
   };
 
   return (

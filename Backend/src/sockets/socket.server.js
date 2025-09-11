@@ -115,7 +115,7 @@ console.log("After memory creation");
         messageModel.create({
           chat: messagePayload.chat,
           user: socket.user._id,
-          content: messagePayload.content,
+          content: response,
           role: "model",
         }),
         generateVector(response),

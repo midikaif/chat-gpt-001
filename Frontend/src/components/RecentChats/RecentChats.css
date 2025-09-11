@@ -1,0 +1,32 @@
+
+
+.recent-entry {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  padding-right: 40px;
+  border-radius: 10px;
+  color: #282828;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.recent-entry.selected {
+  background: linear-gradient(90deg, #e6eaf1 60%, #d1d8e6 100%);
+  box-shadow: 0 2px 8px rgba(76, 0, 180, 0.08);
+  color: #3c009d;
+  font-weight: 600;
+}
+
+.recent-entry:hover {
+  background-color: #e2e6eb;
+  scale: 1.02;
+}
+
+.recent-entry img {
+  width: 1.8vw;
+  opacity: .8;
+  /* border-radius: 12px;
+  margin-right: 10px; */
+}
