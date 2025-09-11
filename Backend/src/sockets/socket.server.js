@@ -59,7 +59,6 @@ function initSocketServer(httpServer) {
         },
       });
 
-console.log("After memory creation");
 
       const [memory, chatHistory] = await Promise.all([
         queryMemory({
@@ -86,7 +85,6 @@ console.log("After memory creation");
         };
       });
 
-      console.log(memory)
       const ltm = [
         {
           role: "user",

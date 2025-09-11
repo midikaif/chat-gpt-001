@@ -8,6 +8,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Welcome from "../Welcome/Welcome";
 import Chats from "../Chats/Chats";
 import axios from "axios";
+import SearchBar from "../SearchBar/SearchBar";
 
 function Home() {
   const {
@@ -53,7 +54,7 @@ function Home() {
         </div>
 
         <div className="main-bottom">
-          
+          {selectedChat && <SearchBar />}
           <div className="bottom-info">
             Humen may display inaccurate info, including about people, so double
             check its responses. Your privacy and Humen app.

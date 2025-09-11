@@ -8,7 +8,7 @@ import { Context } from "../../context/ContextProvider";
 import RecentChats from "../RecentChats/RecentChats";
 
 function Sidebar() {
-  const { notification, setNotification,setExtended, extended } = useContext(Context);
+  const { notification, setNotification,setExtended, extended,selectedChat } = useContext(Context);
 
   const [chats, setChats] = useState([]);
   const [newChat, setNewChat] = useState(false);
@@ -42,6 +42,7 @@ function Sidebar() {
       })
       .then((response) => {
         const { chats } = response.data;
+        console.log(chats);
         setChats(chats);
       })
       .catch((error) => {

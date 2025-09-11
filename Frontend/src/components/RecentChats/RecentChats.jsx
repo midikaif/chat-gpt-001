@@ -12,6 +12,7 @@ function RecentChats({ chats }) {
   return (
     <>
       {
+        
       chats.map((chat, index) => (
         <div
           className={`recent-entry${
