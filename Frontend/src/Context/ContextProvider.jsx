@@ -25,7 +25,16 @@ const ContextProvider = (props) => {
     setLoading(true);
     setShowResult(true);
     setUserPrompt(prompt);
-
+    setPrevPrompts((prev) => [
+      ...prev,
+      {
+        user: {
+          chat: chatId,
+          content: prompt,
+        }
+      },
+    ]);
+    console.log(prevPrompts)
     tempSocket.emit("ai-message", {
       chat: chatId,
       content: prompt,
@@ -37,12 +46,8 @@ const ContextProvider = (props) => {
       setPrevPrompts((prev) => [
         ...prev,
         {
-          user: {
-            chat: chatId,
-            content: prompt,
-          },
           ai: message,
-        },
+        }
       ]);
       setLoading(false);
     });

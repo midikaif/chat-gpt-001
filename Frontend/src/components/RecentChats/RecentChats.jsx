@@ -2,12 +2,10 @@ import React, { useContext } from "react";
 import { Context } from "../../context/ContextProvider";
 import { assets } from "../../assets/assets";
 import "./RecentChats.css";
-import Welcome from "../Welcome/Welcome";
 
 function RecentChats({ chats }) {
   const { selectedChat, setSelectedChat,setExtended } =
     useContext(Context);
-    console.log(chats.length);
 
   return (
     <>

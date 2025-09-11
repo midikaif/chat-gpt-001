@@ -1,17 +1,14 @@
-import Cookies from "js-cookie";
-import { assets } from "../../assets/assets";
-import "./Welcome.css";
 import { useContext, useEffect, useState } from "react";
 import { Context } from "../../context/ContextProvider";
 import RecentChats from "../RecentChats/RecentChats";
 import axios from "axios";
 import Cards from "../Cards/Cards";
+import "./Welcome.css";
 
 function Welcome() {
-  const cookies = Cookies.get("token");
   const [chats, setChats] = useState([]);
 
-  const { user, selectedChat, notification, setNotification, extended, setExtended } = useContext(Context);
+  const { user, selectedChat, notification } = useContext(Context);
 //   console.log(user);
 
   useEffect(() => {
@@ -21,7 +18,6 @@ function Welcome() {
       })
       .then((response) => {
         const { chats } = response.data;
-        console.log(chats);
         setChats(chats);
       })
       .catch((error) => {

@@ -1,35 +1,25 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef } from "react";
 import Cookies from "js-cookie";
-import { io } from "socket.io-client";
 import "./Home.css";
 import { assets } from "../../assets/assets";
-import { Context } from "../../Context/ContextProvider";
 import { useLocation, useNavigate } from "react-router-dom";
 import Welcome from "../Welcome/Welcome";
 import Chats from "../Chats/Chats";
-import axios from "axios";
 import SearchBar from "../SearchBar/SearchBar";
+import { Context } from "../../context/ContextProvider";
 
 function Home() {
   const {
-    onSend,
-    userPrompt,
-    showResult,
-    loading,
-    aiPrompt,
-    setInput,
-    input,
     selectedChat,
-    setLoading,
-    setSelectedChat,
-    setChats
+    prevPrompts
   } = useContext(Context);
 
   const location = useLocation();
   const navigate = useNavigate();
-  console.log(aiPrompt.chat === selectedChat);
 
   const cookies = Cookies.get("token");
+
+  const resultRef = useRef(null);
 
   useEffect(() => {
     const path = location.pathname;
@@ -39,8 +29,11 @@ function Home() {
     }
   }, [location.pathname]);
 
-
-
+  useEffect(() => {
+    if (resultRef.current) {
+      resultRef.current.scrollTop = resultRef.current.scrollHeight;
+    }
+  }, [prevPrompts]);
 
   return (
     <div className="main">
@@ -49,7 +42,7 @@ function Home() {
         <img src={assets.user_icon} alt="user icon" />
       </div>
       <div className="main-container">
-        <div className="result">
+        <div className="result" ref={resultRef}>
           {selectedChat ? <Chats selectedChat={selectedChat} /> : <Welcome />}
         </div>
 
@@ -61,7 +54,6 @@ function Home() {
           </div>
         </div>
       </div>
-      {/* } */}
     </div>
   );
 }

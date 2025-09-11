@@ -1,11 +1,11 @@
-import React, { useContext, useEffect } from "react";
+import  { useContext, useEffect } from "react";
 import { assets } from "../../assets/assets";
 import { Context } from "../../context/ContextProvider";
 import axios from "axios";
 import Welcome from "../Welcome/Welcome";
 
 function Chats({ selectedChat }) {
-  const { userPrompt, aiPrompt, prevPrompts, setPrevPrompts } =
+  const { prevPrompts, setPrevPrompts } =
     useContext(Context);
 
   useEffect(() => {
@@ -15,22 +15,23 @@ function Chats({ selectedChat }) {
       })
       .then((response) => {
         const result = response.data.chat;
-        console.log(result);
         setPrevPrompts(result);
-        // result.map((item) => {
-        //     const role = item.role;
-        //     const content = item.content;
-        //     setPrevPrompts((prev) => [...prev, { [role]: content }]);
-        // });
-
-        console.log(prevPrompts);
-
-        // Update the context with the fetched prompts
       })
       .catch((error) => {
         console.error("Error fetching chat data:", error);
       });
   }, [selectedChat]);
+
+
+
+//   useEffect(() => {
+//     console.log(prevPrompts);
+//   }, [onSend]);
+
+
+
+
+
 
   return prevPrompts.length === 0 ? (
     <Welcome />
