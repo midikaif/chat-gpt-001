@@ -1,5 +1,5 @@
 import { io } from "socket.io-client";
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 const Context = createContext();
 
@@ -9,48 +9,44 @@ const ContextProvider = (props) => {
   const [user, setUser] = useState(null);
   const [input, setInput] = useState("");
   const [userPrompt, setUserPrompt] = useState("");
+  const [aiPrompt, setAiPrompt] = useState({});
   const [prevPrompts, setPrevPrompts] = useState([]);
   const [showResult, setShowResult] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [aiPrompt, setAiPrompt] = useState({});
   const [notification, setNotification] = useState("");
   const [extended, setExtended] = useState(false);
+  const [socket, setSocket] = useState(null);
 
   const [selectedChat, setSelectedChat] = useState(null);
 
-  const tempSocket = io("http://localhost:3000", { withCredentials: true });
+  
 
   const onSend = async (prompt, chatId) => {
-    setAiPrompt({});
     setLoading(true);
+    console.log(loading);
     setShowResult(true);
-    setUserPrompt(prompt);
+    console.log(prompt);
+    setUserPrompt({
+      user: {
+        chat: chatId,
+        content: prompt,
+      },
+    });
     setPrevPrompts((prev) => [
       ...prev,
       {
-        user: {
-          chat: chatId,
-          content: prompt,
-        }
+        role: "user",
+        chat: chatId,
+        content: prompt,
       },
     ]);
-    console.log(prevPrompts)
-    tempSocket.emit("ai-message", {
+
+    socket.emit("ai-message", {
       chat: chatId,
       content: prompt,
     });
 
-    tempSocket.on("ai-response", (message) => {
-      console.log("Message from server:", message);
-      setAiPrompt(message);
-      setPrevPrompts((prev) => [
-        ...prev,
-        {
-          ai: message,
-        }
-      ]);
-      setLoading(false);
-    });
+    console.log("Message sent to server");
   };
 
   const contextValue = {
@@ -73,6 +69,7 @@ const ContextProvider = (props) => {
     setNotification,
     extended,
     setExtended,
+    setSocket
   };
 
   return (
