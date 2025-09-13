@@ -3,12 +3,11 @@ import "./Sidebar.css";
 import { assets } from "../../assets/assets";
 import axios from "axios";
 import { IoIosArrowBack, IoMdSend } from "react-icons/io";
-import { MdCheckCircle } from "react-icons/md";
 import { Context } from "../../context/ContextProvider";
 import RecentChats from "../RecentChats/RecentChats";
 
 function Sidebar() {
-  const { notification, setNotification,setExtended, extended, setSettings } = useContext(Context);
+  const { notification, setNotification,setExtended, extended, setSettings, showNotification } = useContext(Context);
 
   const [chats, setChats] = useState([]);
   const [newChat, setNewChat] = useState(false);
@@ -107,14 +106,17 @@ function Sidebar() {
           </div>
         )}
       </div>
-      {notification && (
-        <div className="notification" style={{}}>
-          <MdCheckCircle size={24} style={{ marginRight: 6 }} />
-          {notification}
-        </div>
+      {notification && ( showNotification()
+        // <div className="notification" style={{}}>
+        //   <MdCheckCircle size={24} style={{ marginRight: 6 }} />
+        //   {notification}
+        // </div>
       )}
       <div className="bottom">
-        <div className="bottom-item recent-entry">
+        <div className="bottom-item recent-entry" onClick={()=>{
+          setNotification('Read the DOCS!');
+          showNotification();
+        }}>
           <img src={assets.question_icon} alt="question icon" />
           {extended && <p>Help</p>}
         </div>

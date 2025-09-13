@@ -18,6 +18,8 @@ function Chats({ selectedChat }) {
   } = useContext(Context);
   const [reload, setReload] = useState(false);
 
+  console.log(prevPrompts)
+
   useEffect(() => {
     axios
       .get(`http://localhost:3000/api/chat/${selectedChat}`, {
@@ -55,7 +57,7 @@ function Chats({ selectedChat }) {
     setSocket(tempSocket);
   }, [setSocket, setPrevPrompts]);
 
-  return prevPrompts.map((prompt, index) => (
+  return prevPrompts.length===0 ? <Welcome/> : prevPrompts.map((prompt, index) => (
     <div key={index}>
       {prompt.role === "user" && (
         <div className="user">

@@ -1,5 +1,5 @@
-import { io } from "socket.io-client";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
+import { MdCheckCircle } from "react-icons/md";
 
 const Context = createContext();
 
@@ -17,11 +17,7 @@ const ContextProvider = (props) => {
   const [extended, setExtended] = useState(false);
   const [socket, setSocket] = useState(null);
   const [selectedChat, setSelectedChat] = useState(null);
-const [settings, setSettings] = useState(false);
-
-  
-
-  
+  const [settings, setSettings] = useState(false);
 
   const onSend = async (prompt, chatId) => {
     setLoading(true);
@@ -51,6 +47,17 @@ const [settings, setSettings] = useState(false);
     console.log("Message sent to server");
   };
 
+  const showNotification = () => {
+    setTimeout(() => setNotification(""), 2000);
+
+    return (
+      <div className="notification" style={{}}>
+        <MdCheckCircle size={24} style={{ marginRight: 6 }} />
+        {notification}
+      </div>
+    );
+  };
+
   const contextValue = {
     prevPrompts,
     setPrevPrompts,
@@ -73,7 +80,8 @@ const [settings, setSettings] = useState(false);
     setExtended,
     setSocket,
     settings,
-    setSettings
+    setSettings,
+    showNotification
   };
 
   return (

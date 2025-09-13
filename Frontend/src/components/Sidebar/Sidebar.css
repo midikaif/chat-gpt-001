@@ -5,6 +5,7 @@
   justify-content: space-between;
   background-color: #f0f4f9;
   padding: 25px 15px;
+  /* min-width: 10vw; */
 }
 
 .sidebar img {
@@ -17,12 +18,17 @@
   cursor: pointer;
 }
 
+.sidebar .top{
+  width: 100%;
+}
+
 .sidebar .new-chat {
+  width: 100%;
   margin-top: 40px;
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 15px;
+  padding: 6px 10px;
   background-color: #e6eaf1;
   border-radius: 50px;
   font-size: 14px;
@@ -38,7 +44,7 @@
 
 .sidebar .chat-input-container {
   width: 100%;
-  padding: 8px 12px;
+  padding: 4px 12px;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 14px;
@@ -59,6 +65,7 @@
 .sidebar .chat-input {
   border: none;
   outline: none;
+  width: 100%;
 }
 
 .sidebar .recent {
@@ -91,7 +98,7 @@
 
 
 
-.sidebar .notification {
+.notification {
   position: fixed;
   left: 50%;
   bottom: 40px;
