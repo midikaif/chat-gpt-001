@@ -1,11 +1,11 @@
-import React, {useContext} from 'react'
+import {useContext} from 'react'
 import {Context} from '../../context/ContextProvider';
 import { assets } from "../../assets/assets";
 
 
 
 function SearchBar() {
-  const { onSend, selectedChat, setLoading, setInput, input } = useContext(Context);
+  const { onSend, selectedChat, setInput, input } = useContext(Context);
 
     
 

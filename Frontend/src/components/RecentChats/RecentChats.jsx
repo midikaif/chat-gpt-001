@@ -1,28 +1,34 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { Context } from "../../context/ContextProvider";
 import { assets } from "../../assets/assets";
 import "./RecentChats.css";
-import {MdDelete} from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import axios from "axios";
 
 function RecentChats({ chats }) {
-  const { selectedChat, setSelectedChat,setExtended, setNotification, showNotification } =
-    useContext(Context);
+  const {
+    selectedChat,
+    setSelectedChat,
+    setExtended,
+    setNotification,
+    showNotification,
+  } = useContext(Context);
 
-    function onDeleteChat(){
-      setNotification('Chat deleted successfully!')
-      axios.delete(`http://localhost:3000/api/chat/${selectedChat}`,{withCredentials: true})
-      .then((res)=>{
+  function onDeleteChat() {
+    setNotification("Chat deleted successfully!");
+    axios
+      .delete(
+        `https://llmmodel-midikaif.onrender.com/api/chat/${selectedChat}`,
+        { withCredentials: true }
+      )
+      .then((res) => {
         console.log(res);
       })
-      .catch((err)=>{
+      .catch((err) => {
         console.log(err);
-      })
-      showNotification();
-    }
-// useEffect(()=>{
-// })
-
+      });
+    showNotification();
+  }
 
   return (
     <>

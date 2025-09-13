@@ -9,7 +9,6 @@ const ContextProvider = (props) => {
   const [user, setUser] = useState(null);
   const [input, setInput] = useState("");
   const [userPrompt, setUserPrompt] = useState("");
-  const [aiPrompt, setAiPrompt] = useState({});
   const [prevPrompts, setPrevPrompts] = useState([]);
   const [showResult, setShowResult] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -21,9 +20,7 @@ const ContextProvider = (props) => {
 
   const onSend = async (prompt, chatId) => {
     setLoading(true);
-    console.log(loading);
     setShowResult(true);
-    console.log(prompt);
     setUserPrompt({
       user: {
         chat: chatId,
@@ -44,7 +41,6 @@ const ContextProvider = (props) => {
       content: prompt,
     });
 
-    console.log("Message sent to server");
   };
 
   const showNotification = () => {
@@ -67,7 +63,6 @@ const ContextProvider = (props) => {
     showResult,
     loading,
     setLoading,
-    aiPrompt,
     input,
     setInput,
     selectedChat,

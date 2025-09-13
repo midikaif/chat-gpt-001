@@ -7,12 +7,19 @@ import { Context } from "../../context/ContextProvider";
 import RecentChats from "../RecentChats/RecentChats";
 
 function Sidebar() {
-  const { notification, setNotification,setExtended, extended, setSettings, showNotification } = useContext(Context);
+  const {
+    notification,
+    setNotification,
+    setExtended,
+    extended,
+    setSettings,
+    showNotification,
+  } = useContext(Context);
 
   const [chats, setChats] = useState([]);
   const [newChat, setNewChat] = useState(false);
   const [chatInput, setChatInput] = useState("");
-  
+
   const sendChat = (e) => {
     e.preventDefault();
     // Simulate chat creation success
@@ -22,7 +29,7 @@ function Sidebar() {
 
     axios
       .post(
-        "http://localhost:3000/api/chat",
+        "https://llmmodel-midikaif.onrender.com/api/chat",
         { title: chatInput },
         { withCredentials: true }
       )
@@ -36,7 +43,7 @@ function Sidebar() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/api/chat", {
+      .get("https://llmmodel-midikaif.onrender.com/api/chat", {
         withCredentials: true,
       })
       .then((response) => {
@@ -106,24 +113,25 @@ function Sidebar() {
           </div>
         )}
       </div>
-      {notification && ( showNotification()
-        // <div className="notification" style={{}}>
-        //   <MdCheckCircle size={24} style={{ marginRight: 6 }} />
-        //   {notification}
-        // </div>
-      )}
+      {notification && showNotification()}
       <div className="bottom">
-        <div className="bottom-item recent-entry" onClick={()=>{
-          setNotification('Read the DOCS!');
-          showNotification();
-        }}>
+        <div
+          className="bottom-item recent-entry"
+          onClick={() => {
+            setNotification("Read the DOCS!");
+            showNotification();
+          }}
+        >
           <img src={assets.question_icon} alt="question icon" />
           {extended && <p>Help</p>}
         </div>
-        
-        <div className="bottom-item recent-entry" onClick={()=> {
-          setSettings(prev => !prev)
-          }}>
+
+        <div
+          className="bottom-item recent-entry"
+          onClick={() => {
+            setSettings((prev) => !prev);
+          }}
+        >
           <img src={assets.setting_icon} alt="setting icon" />
           {extended && <p>Settings</p>}
         </div>

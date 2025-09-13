@@ -9,11 +9,10 @@ function Welcome() {
   const [chats, setChats] = useState([]);
 
   const { user, selectedChat, notification } = useContext(Context);
-//   console.log(user);
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/api/chat", {
+      .get("https://llmmodel-midikaif.onrender.com/api/chat", {
         withCredentials: true,
       })
       .then((response) => {
@@ -40,7 +39,9 @@ function Welcome() {
             <RecentChats chats={chats} />
           </div>
         </div>
-      ): (<Cards/>)}
+      ) : (
+        <Cards />
+      )}
     </>
   );
 }

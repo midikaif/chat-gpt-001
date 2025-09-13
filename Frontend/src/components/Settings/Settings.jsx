@@ -26,7 +26,6 @@ const Settings = ({ temperature, setTemperature }) => {
         />
         <span className="temp-value">{localTemp}</span>
       </div>
-      {/* Add more settings here as needed */}
     </div>
   );
 };

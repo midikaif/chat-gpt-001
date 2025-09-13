@@ -6,12 +6,12 @@ import { MdEmail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import axios from "axios";
 import Cookies from "js-cookie";
-import {Context} from "../../context/ContextProvider";
+import { Context } from "../../context/ContextProvider";
 
 function LoginSignup() {
   const location = useLocation();
   const navigate = useNavigate();
-  const {setUser} = useContext(Context)
+  const { setUser } = useContext(Context);
 
   // Determine initial action from path
 
@@ -19,12 +19,10 @@ function LoginSignup() {
     const cookies = Cookies.get("token");
     const path = location.pathname;
 
-
     if (cookies && (path === "/login" || path === "/signup")) {
       navigate("/", { replace: true });
     }
-
-}, [location.pathname]);
+  }, [location.pathname]);
 
   const getActionFromPath = (pathname) => {
     if (pathname === "/login") return "login";
@@ -43,7 +41,6 @@ function LoginSignup() {
   });
 
   const handleInput = (e) => {
-    // setForm({ ...form, [e.target.name]: e.target.value });
 
     const { name, value } = e.target;
     if (name === "firstName" || name === "lastName") {
@@ -60,11 +57,10 @@ function LoginSignup() {
   };
 
   const handleSubmit = () => {
-    console.log(action);
 
     axios
       .post(
-        `http://localhost:3000/api/auth${location.pathname}`,
+        `https://llmmodel-midikaif.onrender.com/api/auth${location.pathname}`,
         {
           ...form,
         },
@@ -73,7 +69,6 @@ function LoginSignup() {
         }
       )
       .then((response) => {
-        console.log("Response:", response.data);
 
         setUser(response.data.user);
 
