@@ -16,8 +16,10 @@ const ContextProvider = (props) => {
   const [notification, setNotification] = useState("");
   const [extended, setExtended] = useState(false);
   const [socket, setSocket] = useState(null);
-
   const [selectedChat, setSelectedChat] = useState(null);
+const [settings, setSettings] = useState(false);
+
+  
 
   
 
@@ -69,7 +71,9 @@ const ContextProvider = (props) => {
     setNotification,
     extended,
     setExtended,
-    setSocket
+    setSocket,
+    settings,
+    setSettings
   };
 
   return (

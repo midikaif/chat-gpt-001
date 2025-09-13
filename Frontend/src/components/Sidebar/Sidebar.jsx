@@ -8,7 +8,7 @@ import { Context } from "../../context/ContextProvider";
 import RecentChats from "../RecentChats/RecentChats";
 
 function Sidebar() {
-  const { notification, setNotification,setExtended, extended } = useContext(Context);
+  const { notification, setNotification,setExtended, extended, setSettings } = useContext(Context);
 
   const [chats, setChats] = useState([]);
   const [newChat, setNewChat] = useState(false);
@@ -118,11 +118,10 @@ function Sidebar() {
           <img src={assets.question_icon} alt="question icon" />
           {extended && <p>Help</p>}
         </div>
-        <div className="bottom-item recent-entry">
-          <img src={assets.history_icon} alt="history icon" />
-          {extended && <p>Activity</p>}
-        </div>
-        <div className="bottom-item recent-entry">
+        
+        <div className="bottom-item recent-entry" onClick={()=> {
+          setSettings(prev => !prev)
+          }}>
           <img src={assets.setting_icon} alt="setting icon" />
           {extended && <p>Settings</p>}
         </div>

@@ -1,11 +1,17 @@
+import {useContext} from "react";
 import "./App.css";
 import Home from "./components/Home/Home";
 import LoginSignup from "./components/LoginSignup/LoginSignup";
+import Settings from "./components/Settings/Settings";
 import Sidebar from "./components/sidebar/Sidebar";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {Context} from "./context/ContextProvider";
 
 
 function App() {
+  const {settings} = useContext(Context);
+
+
   return (
     <Router>
       <Routes>
@@ -16,7 +22,7 @@ function App() {
           element={
 <>
             <Sidebar />
-              <Home />
+            {settings ? <Settings/> : <Home/>}
 </>          
           }
         />
